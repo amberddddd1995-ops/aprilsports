@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年4月全球体育赛事日历</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+            color: #1e2a3e;
+        }
+        .calendar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 20px 24px 32px 24px;
+        }
+        /* 页眉 */
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 28px;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 16px;
+        }
+        .calendar-header h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            color: #b91c1c;
+            letter-spacing: 1px;
+        }
+        .calendar-header p {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-top: 8px;
+        }
+        /* 星期行 */
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #1f2937;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+        }
+        .weekday {
+            padding: 14px 4px;
+            font-size: 1.1rem;
+            background-color: #2d3a48;
+        }
+        /* 日历网格 */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-left: 1px solid #e2e8f0;
+            background-color: #fff;
+        }
+        .calendar-day {
+            min-height: 150px;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 6px;
+            background-color: #fff;
+            transition: all 0.1s ease;
+            vertical-align: top;
+            overflow-y: auto;
+        }
+        .calendar-day:hover {
+            background-color: #fef9e6;
+        }
+        .day-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: inline-block;
+            background-color: #f3f4f6;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 40px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        .event-item {
+            font-size: 0.7rem;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            padding-left: 4px;
+            border-left: 3px solid;
+            border-radius: 0 4px 4px 0;
+            background-color: #fafcff;
+            padding: 4px 6px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.02);
+        }
+        .event-title {
+            font-weight: 600;
+            display: block;
+            color: #0f172a;
+        }
+        .event-detail {
+            font-size: 0.65rem;
+            color: #2d3e50;
+            display: block;
+            margin-top: 2px;
+        }
+        /* 赛事类别颜色条 */
+        .soccer { border-left-color: #16a34a; }
+        .horse { border-left-color: #9333ea; }
+        .basketball { border-left-color: #e67e22; }
+        .snooker { border-left-color: #2c7da0; }
+        .cycling { border-left-color: #f59e0b; }
+        .afl { border-left-color: #e11d48; }
+        .football-italy { border-left-color: #2563eb; }
+        .ucl { border-left-color: #facc15; }
+        .europa { border-left-color: #f97316; }
+        .libertadores { border-left-color: #0e7c6e; }
+        .ncaa { border-left-color: #d97706; }
+        .generic { border-left-color: #6c757d; }
+
+        /* 空白日期占位 */
+        .empty-day {
+            background-color: #f9fafb;
+            color: #9ca3af;
+        }
+        .empty-day .day-number {
+            background-color: #e5e7eb;
+            color: #6b7280;
+        }
+        /* 打印优化 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .calendar-container {
+                box-shadow: none;
+                padding: 10px;
+                max-width: 100%;
+            }
+            .calendar-day {
+                min-height: 130px;
+                break-inside: avoid;
+            }
+            .event-item {
+                font-size: 0.65rem;
+            }
+            .weekday {
+                background-color: #1f2937;
+                color: white;
+                print-color-adjust: exact;
+            }
+            .calendar-header h1 {
+                color: #b91c1c;
+            }
+        }
+        .footnote {
+            margin-top: 24px;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #5b6e8c;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 16px;
+        }
+        @media (max-width: 760px) {
+            .calendar-day {
+                min-height: 120px;
+                padding: 4px;
+            }
+            .event-item {
+                font-size: 0.6rem;
+                padding: 2px 4px;
+            }
+            .day-number {
+                width: 26px;
+                height: 26px;
+                line-height: 26px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h1>🏆 2026年4月 全球顶级体育赛事日历 🗓️</h1>
+        <p>赛马 · 足球 · 篮球 · 斯诺克 · 自行车 · 澳式橄榄球 · 南美解放者杯 | 每日赛事一览</p>
+    </div>
+
+    <div class="weekdays">
+        <div class="weekday">周一</div>
+        <div class="weekday">周二</div>
+        <div class="weekday">周三</div>
+        <div class="weekday">周四</div>
+        <div class="weekday">周五</div>
+        <div class="weekday">周六</div>
+        <div class="weekday">周日</div>
+    </div>
+    <div class="calendar-grid" id="calendar-grid">
+        <!-- 动态JS生成日历内容，保证精确对应2026年4月，日期事件完全基于文档 -->
+    </div>
+    <div class="footnote">
+        📍 赛事信息基于2026年4月全球体育日程整理 | 欧冠/欧联/英超/意甲/赛马/NBA季后赛等焦点 | 具体时间可能微调，以实际转播为准
+    </div>
+</div>
+
+<script>
+    // 2026年4月1日是星期三 (验证: 2026年4月1日实际为周三)
+    // 构建月份天数
+    const year = 2026;
+    const month = 3; // 4月 (0-index: 3)
+    const firstDayOfMonth = new Date(year, month, 1);
+    const startWeekday = firstDayOfMonth.getDay(); // 0周日 ~ 6周六，需转换周一为第一天
+    // 调整为周一索引: 周一=0, 周日=6
+    let startOffset = (startWeekday === 0 ? 6 : startWeekday - 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // 赛事数据字典: key 为日期数字(1-30)，存储事件列表
+    const eventsMap = new Map();
+    
+    // ---------- 辅助添加事件 ----------
+    function addEvent(day, title, detail, category = 'generic') {
+        if (!eventsMap.has(day)) eventsMap.set(day, []);
+        eventsMap.get(day).push({ title, detail, category });
+    }
+    
+    // ************ 根据提供的文档完整录入所有赛事（精确到日期） ************
+    
+    // 4月4日 (周六)
+    addEvent(4, '🏇 唐卡斯特一哩赛 (Doncaster Mile)', '澳大利亚悉尼秋季赛马嘉年华，全澳投注额最高一哩赛之一', 'horse');
+    addEvent(4, '🏇 澳洲打吡 (Australian Derby)', '兰德威克赛马场，顶级三岁马经典赛事', 'horse');
+    addEvent(4, '⚽ 英格兰足总杯四分之一决赛', '英格兰足总杯关键战，豪门角逐半决赛名额', 'soccer');
+    
+    // 4月5日 (周日)
+    addEvent(5, '🏀 NCAA女子组决赛', '美国大学篮球冠军战 (凤凰城)', 'ncaa');
+    addEvent(5, '🚴 环弗兰德斯古典赛 (Ronde van Vlaanderen)', '比利时/欧洲春季古典赛巅峰', 'cycling');
+    
+    // 4月6日 (周一)
+    addEvent(6, '🏀 NCAA男子组决赛', '印第安纳波利斯，全美单场投注量最大赛事之一', 'ncaa');
+    addEvent(6, '⚽ 国际米兰 vs 罗马', '意甲顶级对决：欧战席位&争冠关键战', 'football-italy');
+    addEvent(6, '🎱 斯诺克世锦赛资格赛开杆', '谢菲尔德，斯诺克赛季最高规格排名赛资格赛 (4月6-15日)', 'snooker');
+    
+    // 4月7日 (周二)
+    addEvent(7, '🏆 欧冠四分之一决赛首回合', '巴黎圣日耳曼 vs 利物浦 / 皇马 vs 拜仁 / 阿森纳 vs 葡萄牙体育等', 'ucl');
+    addEvent(7, '⚽ 那不勒斯 vs AC米兰', '意甲豪门对决，博彩市场热门选择', 'football-italy');
+    addEvent(7, '🏆 南美解放者杯小组赛第1轮', '弗拉门戈、帕尔梅拉斯、博卡、河床等豪门出战 (4月7-9日)', 'libertadores');
+    
+    // 4月8日 (周三)
+    addEvent(8, '🏆 欧冠四分之一决赛首回合', '剩余场次强强对话，决定晋级先机', 'ucl');
+    addEvent(8, '🏆 解放者杯小组赛第1轮', '南美顶级俱乐部赛事小组阶段', 'libertadores');
+    
+    // 4月9日 (周四)
+    addEvent(9, '🏆 欧联杯四分之一决赛首回合', '波尔图 vs 诺丁汉森林 / 博洛尼亚 vs 阿斯顿维拉等', 'europa');
+    addEvent(9, '🏆 解放者杯小组赛第1轮收官', '小组赛首轮精彩对决', 'libertadores');
+    addEvent(9, '🏇 阿特里全英大賽节 (Grand National Festival) 第1天', '利物浦Aintree赛马场，英国跳栏赛季高潮', 'horse');
+    addEvent(9, '🏉 AFL Gather Round (第5轮) 开赛', '阿德莱德集中赛，所有18支球队强强对话 (4月9-12日)', 'afl');
+    
+    // 4月10日 (周五)
+    addEvent(10, '🏇 Grand National Festival 第2天', '英国国家障碍大赛预热，顶级障碍赛', 'horse');
+    addEvent(10, '🏉 AFL Gather Round', '澳式橄榄球第5轮赛事持续', 'afl');
+    
+    // 4月11日 (周六)
+    addEvent(11, '🏇 英国国家障碍大赛 (Grand National)', '欧洲奖金最高跳栏赛，4月11日英国时间16:00开赛，34匹名驹', 'horse');
+    addEvent(11, '🏇 女皇伊丽莎白锦标赛 & 悉尼杯', '澳大利亚悉尼秋季冠军赛马日，总奖金极高', 'horse');
+    addEvent(11, '⚽ 阿森纳 vs 伯恩茅斯', '英超争冠球队关键战', 'soccer');
+    addEvent(11, '⚽ 利物浦 vs 富勒姆', '利物浦主场焦点战', 'soccer');
+    addEvent(11, '⚽ AC米兰 vs 乌迪内斯', '意甲传统豪门主场赛事', 'football-italy');
+    addEvent(11, '🏉 AFL Gather Round 持续', '澳式橄榄球周末激战', 'afl');
+    
+    // 4月12日 (周日)
+    addEvent(12, '⚽ 切尔西 vs 曼城', '英超顶级投注点：卫冕冠军与豪门强强对话', 'soccer');
+    addEvent(12, '⚽ 亚特兰大 vs 尤文图斯', '意甲争夺前四名直接对话', 'football-italy');
+    addEvent(12, '🏀 NBA常规赛收官日', '所有30支球队最后一轮，决定最终排名', 'basketball');
+    addEvent(12, '🚴 巴黎-鲁贝古典赛', '法国/北方地狱，自行车经典赛', 'cycling');
+    addEvent(12, '🏉 AFL Gather Round 最后一日', '阿德莱德赛区全部比赛收官', 'afl');
+    
+    // 4月13日 (周一)
+    addEvent(13, '⚽ 曼联 vs 利兹联', '英超传统德比宿敌对决，投注热度高', 'soccer');
+    
+    // 4月14日 (周二)
+    addEvent(14, '🏆 欧冠四分之一决赛次回合', '欧冠八强决战决定四强名额', 'ucl');
+    addEvent(14, '🏀 NBA附加赛 (Play-In) 开始', '4月14-17日，决定东西部第7、8种子', 'basketball');
+    addEvent(14, '🏆 解放者杯小组赛第2轮', '南美解放者杯小组赛火热进行 (4月14-16日)', 'libertadores');
+    
+    // 4月15日 (周三)
+    addEvent(15, '🏆 欧冠四分之一决赛次回合', '次回合终极对决，豪门生死战', 'ucl');
+    addEvent(15, '🏀 NBA附加赛', '附加赛继续争夺季后赛门票', 'basketball');
+    addEvent(15, '🏆 解放者杯小组赛第2轮', '小组赛第二比赛日', 'libertadores');
+    
+    // 4月16日 (周四)
+    addEvent(16, '🏆 欧联杯四分之一决赛次回合', '欧联八强决战，晋级半决赛', 'europa');
+    addEvent(16, '🏀 NBA附加赛', '附加赛最终名额争夺', 'basketball');
+    addEvent(16, '🏆 解放者杯小组赛第2轮', '解放者杯小组赛本周末前收尾', 'libertadores');
+    
+    // 4月17日 (周五)
+    addEvent(17, '🏇 苏格兰国家障碍大赛 (Scottish Grand National) 第1天', '艾尔赛马场，苏格兰国家障碍大赛开幕', 'horse');
+    addEvent(17, '🏀 NBA附加赛收官日', '最终确定季后赛第8号种子', 'basketball');
+    
+    // 4月18日 (周六)
+    addEvent(18, '🏇 苏格兰国家障碍大赛 第2天', '苏格兰赛马盛事决赛日', 'horse');
+    addEvent(18, '⚽ 罗马 vs 亚特兰大', '意甲强强对话，欧冠资格争夺关键战', 'football-italy');
+    addEvent(18, '🏀 NBA季后赛首轮开启', '北美体育博彩单日投注额最高节点之一', 'basketball');
+    addEvent(18, '🎱 世界斯诺克锦标赛正赛', '谢菲尔德克鲁斯堡剧院，赛季最高规格排名赛 (4月18日-5月4日)', 'snooker');
+    addEvent(18, '⚽ 切尔西 vs 曼联', '英超顶级投注点：传统豪门排名争夺战', 'soccer');
+    
+    // 4月19日 (周日)
+    addEvent(19, '⚽ 曼城 vs 阿森纳', '全月最高关注度榜首大战，极可能决定英超冠军归属', 'soccer');
+    addEvent(19, '⚽ 埃弗顿 vs 利物浦', '默西塞德郡德比，地方德比伴随高投注量', 'soccer');
+    addEvent(19, '🏉 西海岸德比 (Western Derby)', '澳式橄榄球：西海岸鹰队 vs 弗里曼特尔队，西澳投注重头戏', 'afl');
+    
+    // 4月25日 (周六)
+    addEvent(25, '🏇 跳栏赛季决赛 (Jump Finale) Bet365金杯赛', '英国Sandown Park，标志跳栏赛马季结束', 'horse');
+    addEvent(25, '⚽ 英格兰足总杯半决赛', '温布利大球场，决赛门票争夺', 'soccer');
+    addEvent(25, '⚽ 阿森纳 vs 纽卡斯尔联', '英超争冠对阵争四关键对碰', 'soccer');
+    addEvent(25, '🏉 ANZAC Day 对决: 科林伍德 vs 艾森顿', '墨尔本板球场，AFL全年投注额仅次于总决赛的单场', 'afl');
+    
+    // 4月26日 (周日)
+    addEvent(26, '⚽ 布莱顿 vs 切尔西', '英超切尔西客场挑战强敌', 'soccer');
+    addEvent(26, '⚽ AC米兰 vs 尤文图斯', '意甲全月最高关注度：意大利国家德比级别对决', 'football-italy');
+    
+    // 4月28日 (周二)
+    addEvent(28, '🏆 欧冠半决赛首回合', '欧洲冠军联赛四强首回合巅峰对决', 'ucl');
+    addEvent(28, '🏆 解放者杯小组赛第3轮', '南美解放者杯小组赛进入关键阶段 (4月28-30日)', 'libertadores');
+    
+    // 4月29日 (周三)
+    addEvent(29, '🏆 欧冠半决赛首回合 (另一场)', '另一组半决赛首回合豪门碰撞', 'ucl');
+    addEvent(29, '🏆 解放者杯小组赛第3轮', '解放者杯小组第三比赛日', 'libertadores');
+    
+    // 4月30日 (周四)
+    addEvent(30, '🏆 欧联杯半决赛首回合', '欧联杯四强首回合，英超球队维拉/森林等可能出战', 'europa');
+    addEvent(30, '🏆 解放者杯小组赛第3轮收官', '小组赛第三轮结束，小组出线形势渐明朗', 'libertadores');
+    
+    // 补充文档中4月其他日期但有跨日项目: 4月11日同时已有, 4月18日斯诺克已加，4月6日-15日资格赛已标4月6日
+    // 4月12日NBA常规赛收官, 4月14附加赛开始, 4月18季后赛开始. 4月4日足总杯四分之一决赛, 4月25半决赛已加.
+    // 4月5日NCAA女子决赛, 4月6日男子决赛. 4月9-12日Gather Round已覆盖. 4月19日西海岸德比已加.
+    // 确保没有任何遗漏重要场次: 意甲4月12日亚特兰大vs尤文，4月18日罗马vs亚特兰大,4月26日米兰vs尤文, 4月7日那不勒斯vs米兰均完整。
+    // 添加4月1/2/3日无重大赛事, 4月8日、4月9日等都已完善。
+    // 另根据文档4月12日也有巴黎-鲁贝，已加。4月5日环弗兰德斯，完美。
+    
+    // 额外文档内提到: 4月19日除了英超德比，西海岸德比已存在；4月25日ANZAC日已加。
+    // 欧冠半决赛首回合28/29日，欧联半决赛30日。以及解放者杯小组赛三轮完整。
+    // 为保证全面，手动补充一下4月18日之后NBA季后赛首轮，已添加。4月22/23/24无特定大型赛事，留给空白即可。
+    
+    // 构建日历网格 (共6行)
+    const totalCells = 42; // 6x7
+    let calendarDays = [];
+    for (let i = 0; i < totalCells; i++) {
+        let dayNum = i - startOffset + 1;
+        let isValid = (dayNum >= 1 && dayNum <= daysInMonth);
+        calendarDays.push({
+            valid: isValid,
+            date: isValid ? dayNum : null
+        });
+    }
+    
+    // 渲染网格
+    const gridContainer = document.getElementById('calendar-grid');
+    gridContainer.innerHTML = '';
+    
+    calendarDays.forEach(dayInfo => {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+        if (!dayInfo.valid) {
+            dayDiv.classList.add('empty-day');
+            const emptySpan = document.createElement('div');
+            emptySpan.className = 'day-number';
+            emptySpan.innerText = '';
+            dayDiv.appendChild(emptySpan);
+            gridContainer.appendChild(dayDiv);
+            return;
+        }
+        const dateNum = dayInfo.date;
+        dayDiv.classList.add('active-day');
+        const numberSpan = document.createElement('div');
+        numberSpan.className = 'day-number';
+        numberSpan.innerText = dateNum;
+        dayDiv.appendChild(numberSpan);
+        
+        // 获取当天赛事
+        const events = eventsMap.get(dateNum) || [];
+        // 按某种顺序展示，不排序也可
+        events.forEach(ev => {
+            const eventDiv = document.createElement('div');
+            eventDiv.className = `event-item ${ev.category}`;
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'event-title';
+            titleSpan.innerText = ev.title;
+            const detailSpan = document.createElement('span');
+            detailSpan.className = 'event-detail';
+            detailSpan.innerText = ev.detail;
+            eventDiv.appendChild(titleSpan);
+            eventDiv.appendChild(detailSpan);
+            dayDiv.appendChild(eventDiv);
+        });
+        
+        // 如果当天没有赛事，添加一个微提示无赛事（保持整洁，不加文字也行）
+        if (events.length === 0) {
+            const noneSpan = document.createElement('div');
+            noneSpan.style.fontSize = '0.65rem';
+            noneSpan.style.color = '#aaa';
+            noneSpan.style.marginTop = '8px';
+            noneSpan.innerText = '—— 暂无主要赛事 ——';
+            dayDiv.appendChild(noneSpan);
+        }
+        
+        gridContainer.appendChild(dayDiv);
+    });
+    
+    // 附加手动校正: 确保有些赛事如果有跨天的备注，可以在4月1-3日都无; 但4月3日文档未提任何比赛，保持空白合理。
+    // 另外根据文档，4月19日除了英超，还有西海岸德比已经增加，4月12日AFL Gather round最后一天已加。
+    // 完善4月4日唐卡斯特一哩赛+澳洲打吡；4月11日女皇伊丽莎白锦标赛/悉尼杯；4月18苏格兰障碍大赛决赛等。
+    // 增加4月14-16日NBA附加赛已标注连续日，4月18日NBA季后赛首轮开启，完美。
+    // 为符合"顶级赛事"，4月20-24日无焦点大赛，显示无赛事。
+    
+    // 另外针对4月9日欧联杯，4月16日欧联次回合；4月30日欧联半决赛首回合，均已包含。
+    // 4月7日解放者杯轮次，4月14日解放者杯，4月28日解放者杯均全面。
+    // 针对4月18日斯诺克世锦赛开幕已标记；4月25日跳栏赛季决赛及足总杯半决赛，所有信息精准呈现。
+    // 根据文档4月6日斯诺克资格赛开始，已涵盖，4月18日正赛开始。
+    
+    // 最终打印样式友好
+    console.log("2026年4月体育日历生成完毕,共包含赛事条目:", eventsMap.size);
+</script>
+</body>
+</html>
